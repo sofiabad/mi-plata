@@ -561,9 +561,11 @@ function render(){
   document.getElementById('ahorroUSD').textContent = fmtUSD(c.savUSD);
   document.getElementById('ahorroARS').textContent = fmt(c.savARS);
   const ownFixed = state.fixedUSD && state.fixedUSD[ym(view)];
-  document.getElementById('fixedInput').value = c.fixedUSDmonth ? c.fixedUSDmonth.toLocaleString('es-AR') : '';
+  const fEl = document.getElementById('fixedInput');
+  if(document.activeElement!==fEl) fEl.value = c.fixedUSDmonth ? c.fixedUSDmonth.toLocaleString('es-AR') : '';
   const monthRate = state.rates && state.rates[ym(view)] ? state.rates[ym(view)] : '';
-  document.getElementById('rateInput').value = monthRate ? monthRate.toLocaleString('es-AR') : '';
+  const rEl = document.getElementById('rateInput');
+  if(document.activeElement!==rEl) rEl.value = monthRate ? monthRate.toLocaleString('es-AR') : '';
 
   const conv = document.getElementById('convLine');
   if(c.fixedUSDmonth && c.rate){
@@ -935,7 +937,7 @@ groupInput(document.getElementById('amtInput'));
 /* fixed income */
 const fixedInput=document.getElementById('fixedInput');
 groupInput(fixedInput);
-fixedInput.addEventListener('change',()=>{
+fixedInput.addEventListener('input',()=>{
   const v = parseInt(fixedInput.value.replace(/[^\d]/g,''),10)||0;
   if(!state.fixedUSD) state.fixedUSD={};
   if(v>0) state.fixedUSD[ym(view)] = v; else delete state.fixedUSD[ym(view)];
@@ -943,7 +945,7 @@ fixedInput.addEventListener('change',()=>{
 });
 const rateInput=document.getElementById('rateInput');
 groupInput(rateInput);
-rateInput.addEventListener('change',()=>{
+rateInput.addEventListener('input',()=>{
   const v = parseInt(rateInput.value.replace(/[^\d]/g,''),10)||0;
   if(!state.rates) state.rates={};
   if(v>0) state.rates[ym(view)] = v; else delete state.rates[ym(view)];
